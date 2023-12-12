@@ -15,9 +15,15 @@ Software Engineer group5
 * ![image](https://github.com/Puriwt/Software-Engineer-group5/blob/main/media/Pichayada.PNG)
 
 
-* 3นายทวิชชา วงษาเทียม
+* 3 นายทวิชชา วงษาเทียม
 * 643020608-8
 * section 3
 * thawitcha
   
-*![image](https://github.com/Puriwt/Software-Engineer-group5/blob/main/media/thawitcha.png)
+![image](https://github.com/Puriwt/Software-Engineer-group5/blob/main/media/thawitcha.png)
+
+* 4 นางสาวกัญญาณัฐ  ถิตย์วิลาศ
+* 643020592-7
+* section 3
+* Kanyanat
+![image](https://github.com/Puriwt/Software-Engineer-group5/blob/main/media/kanyanat1.png)
