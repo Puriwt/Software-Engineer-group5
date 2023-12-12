@@ -13,3 +13,10 @@ Software Engineer group5
 * section 3
 * PichayadaKamaon
 * ![image](https://github.com/Puriwt/Software-Engineer-group5/blob/main/media/Pichayada.PNG)
+
+
+* 3นายทวิชชา วงษาเทียม
+* 643020608-8
+* section 3
+* thawitcha
+*![image](https://github.com/Puriwt/Software-Engineer-group5/blob/main/media/thawitcha.png)
