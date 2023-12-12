@@ -19,7 +19,7 @@ Software Engineer group5
 * 643020608-8
 * section 3
 * thawitcha
-  
+  ![alt text](https://github.com/Puriwt/Software-Engineer-group5/blob/main/media/thawitcha.png width="250")
 ![image](https://github.com/Puriwt/Software-Engineer-group5/blob/main/media/thawitcha.png width="250")
 ---
 * 4 นางสาวกัญญาณัฐ  ถิตย์วิลาศ
