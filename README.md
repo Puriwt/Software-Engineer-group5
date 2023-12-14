@@ -12,7 +12,7 @@ Software Engineer group5
 * 643020629-0
 * section 3
 * PichayadaKamaon
-* ![image](https://github.com/Puriwt/Software-Engineer-group5/blob/main/media/Pichayada.PNG)
+<img src="https://github.com/Puriwt/Software-Engineer-group5/blob/main/media/Pichayada.PNG" width="300">
 
 ---
 * 3 นายทวิชชา วงษาเทียม
