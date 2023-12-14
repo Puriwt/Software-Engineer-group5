@@ -31,3 +31,9 @@ Software Engineer group5
 <img src="https://github.com/Puriwt/Software-Engineer-group5/blob/main/media/kanyanat1.png" width="300">  
 
 ---
+* 5 นายธรรมภูมิ ภู่เพียงใจ
+* 643021323-9
+* section 3
+* thammaphum
+
+<img src="https://github.com/Puriwt/Software-Engineer-group5/blob/main/media/thamma.jpg" width="300"> 
