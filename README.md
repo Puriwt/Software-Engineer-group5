@@ -7,6 +7,7 @@ Software Engineer group5
 * section 3
 * Puriwt
 <img src="https://github.com/Puriwt/Software-Engineer-group5/blob/main/media/puriwat.jpeg" width="300">
+
 ---
 * 2 นางสาวพิชญะดา คำอ้น
 * 643020629-0
