@@ -39,3 +39,11 @@ Software Engineer group5
 * thammaphum
 
 <img src="https://github.com/Puriwt/Software-Engineer-group5/blob/main/media/thamma.jpg" width="300"> 
+
+---
+* 6 นายเอกพันธ์ สมน้อย
+* 643021346-7
+* section 3
+* Aekkapan
+
+<img src="https://github.com/Puriwt/Software-Engineer-group5/blob/main/media/Aekkapan.png" width="300"> 
