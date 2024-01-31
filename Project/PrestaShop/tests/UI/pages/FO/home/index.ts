@@ -137,13 +137,17 @@ class HomePage extends FOBasePage {
 
   public readonly successSubscriptionMessage: string;
 
+  public readonly successSendVerificationEmailMessage: string;
+
+  public readonly successSendConfirmationEmailMessage: string;
+
   public readonly alreadyUsedEmailMessage: string;
 
   public readonly productHummingbird: (number: number) => string;
 
   public readonly productImgHummingbird: (number: number) => string;
 
-  public readonly quickviewButtonHummingbird: (number: number) => string;
+  public readonly quickViewButtonHummingbird: (number: number) => string;
 
   public readonly blockCartModalCloseButtonHummingbird: string;
 
@@ -229,12 +233,14 @@ class HomePage extends FOBasePage {
 
     // Newsletter subscription messages
     this.successSubscriptionMessage = 'You have successfully subscribed to this newsletter.';
+    this.successSendVerificationEmailMessage = 'A verification email has been sent. Please check your inbox.';
+    this.successSendConfirmationEmailMessage = 'A confirmation email has been sent. Please check your inbox.';
     this.alreadyUsedEmailMessage = 'This email address is already registered.';
 
     // Hummingbird
     this.productHummingbird = (number: number) => `#content .products div:nth-child(${number})`;
     this.productImgHummingbird = (number: number) => `${this.productHummingbird(number)} img`;
-    this.quickviewButtonHummingbird = (number: number) => `${this.productHummingbird(number)} .product-miniature__quickview `
+    this.quickViewButtonHummingbird = (number: number) => `${this.productHummingbird(number)} .product-miniature__quickview `
       + 'button';
     this.blockCartModalCloseButtonHummingbird = `${this.blockCartModalDiv} button.btn-close`;
   }
@@ -450,14 +456,14 @@ class HomePage extends FOBasePage {
    */
   async quickViewProduct(page: Page, id: number): Promise<void> {
     if (this.theme === 'hummingbird') {
-      await page.hover(this.productImgHummingbird(id));
-      await this.waitForVisibleSelector(page, this.quickviewButtonHummingbird(id));
-      await page.locator(this.quickviewButtonHummingbird(id)).first().click();
+      await page.locator(this.productImgHummingbird(id)).first().hover();
+      await this.waitForVisibleSelector(page, this.quickViewButtonHummingbird(id));
+      await page.locator(this.quickViewButtonHummingbird(id)).first().click();
 
       return;
     }
 
-    await page.hover(this.productImg(id));
+    await page.locator(this.productImg(id)).hover();
     let displayed: boolean = false;
 
     /* eslint-disable no-await-in-loop */
@@ -592,11 +598,11 @@ class HomePage extends FOBasePage {
    */
   async getProductWithDiscountDetailsFromQuickViewModal(page: Page): Promise<{
     discountPercentage: string,
-    thumbImage: string|null,
+    thumbImage: string | null,
     price: number,
     taxShippingDeliveryLabel: string,
     regularPrice: number,
-    coverImage: string|null,
+    coverImage: string | null,
     name: string,
     shortDescription: string,
   }> {
@@ -619,10 +625,10 @@ class HomePage extends FOBasePage {
    * coverImage: string|null, name: string, shortDescription: string}>}
    */
   async getProductDetailsFromQuickViewModal(page: Page): Promise<{
-    thumbImage: string|null,
+    thumbImage: string | null,
     price: number,
     taxShippingDeliveryLabel: string,
-    coverImage: string|null,
+    coverImage: string | null,
     name: string,
     shortDescription: string,
   }> {
@@ -651,16 +657,16 @@ class HomePage extends FOBasePage {
     if ('color' in attribute && 'size' in attribute) {
       attributes.push({
         name: 'size',
-        value: await page.getAttribute(`${this.quickViewProductSize} option[selected]`, 'title') ?? '',
+        value: await this.getAttributeContent(page, `${this.quickViewProductSize} option[selected]`, 'title'),
       });
       attributes.push({
         name: 'color',
-        value: await page.getAttribute(`${this.quickViewProductColor} input[checked='checked']`, 'title') ?? '',
+        value: await this.getAttributeContent(page, `${this.quickViewProductColor} input[checked='checked']`, 'title'),
       });
     } else {
       attributes.push({
         name: 'dimension',
-        value: await page.getAttribute(`${this.quickViewProductDimension} option[selected]`, 'title') ?? '',
+        value: await this.getAttributeContent(page, `${this.quickViewProductDimension} option[selected]`, 'title'),
       });
     }
     return attributes;
@@ -718,7 +724,7 @@ class HomePage extends FOBasePage {
    * @returns {Promise<void>}
    */
   async selectProductColor(page: Page, id: number, color: string): Promise<void> {
-    await page.hover(this.productImg(id));
+    await page.locator(this.productImg(id)).hover();
     let displayed = false;
 
     /* eslint-disable no-await-in-loop */

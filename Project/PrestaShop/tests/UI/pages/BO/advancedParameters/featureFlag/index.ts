@@ -9,8 +9,6 @@ import {Page} from 'playwright';
 class FeatureFlag extends BOBasePage {
   public readonly pageTitle: string;
 
-  public readonly featureFlagMultipleImageFormats: string;
-
   public readonly featureFlagAuthorizationServer: string;
 
   private readonly featureFlagSwitchButton: (status: string, feature: string, toggle: number) => string;
@@ -21,7 +19,7 @@ class FeatureFlag extends BOBasePage {
 
   private readonly modalSubmitFeatureFlag: string;
 
-  private readonly enableExperimentalfeatureButton: string;
+  private readonly enableExperimentalFeatureButton: string;
 
   /**
    * @constructs
@@ -34,7 +32,6 @@ class FeatureFlag extends BOBasePage {
     this.successfulUpdateMessage = 'Update successful';
 
     // Feature Flag
-    this.featureFlagMultipleImageFormats = 'multiple_image_format';
     this.featureFlagAuthorizationServer = 'authorization_server';
     // Selectors
     this.featureFlagSwitchButton = (status: string, feature: string, toggle: number) => `#feature_flag_${
@@ -42,7 +39,7 @@ class FeatureFlag extends BOBasePage {
     this.submitButton = (status: string) => `#feature_flag_${status}_submit`;
     this.alertSuccess = 'div.alert.alert-success[role="alert"]';
     this.modalSubmitFeatureFlag = '#modal-confirm-submit-feature-flag';
-    this.enableExperimentalfeatureButton = `${this.modalSubmitFeatureFlag} button.btn-confirm-submit`;
+    this.enableExperimentalFeatureButton = `${this.modalSubmitFeatureFlag} button.btn-confirm-submit`;
   }
 
   /**
@@ -56,9 +53,6 @@ class FeatureFlag extends BOBasePage {
     let isStable: boolean;
 
     switch (featureFlag) {
-      case this.featureFlagMultipleImageFormats:
-        isStable = true;
-        break;
       case this.featureFlagAuthorizationServer:
         isStable = false;
         break;
@@ -80,7 +74,7 @@ class FeatureFlag extends BOBasePage {
     // The confirmation modal is only displayed for experimental/beta feature flags
     if (toEnable && !isStable) {
       await this.waitForVisibleSelector(page, this.modalSubmitFeatureFlag);
-      await this.clickAndWaitForLoadState(page, this.enableExperimentalfeatureButton);
+      await this.clickAndWaitForLoadState(page, this.enableExperimentalFeatureButton);
     }
 
     return this.getTextContent(page, this.alertSuccess, true);

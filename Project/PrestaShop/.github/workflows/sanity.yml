@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  TEST_CAMPAIGN: 'sanity'
+  TEST_CAMPAIGN: 'sanity:fast-fail'
 
 jobs:
   sanity:
@@ -21,6 +21,7 @@ jobs:
     strategy:
       matrix:
         php: [ '8.1', '8.2' ]
+        browser: [ 'chromium', 'firefox', 'webkit' ]
       fail-fast: false
 
     steps:
@@ -38,6 +39,7 @@ jobs:
         uses: ./.github/actions/ui-test
         with:
           TEST_CAMPAIGN: ${{ env.TEST_CAMPAIGN }}
+          BROWSER: ${{ matrix.browser }}
 
       - name: Export docker logs
         if: failure()

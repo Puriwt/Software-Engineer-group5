@@ -189,9 +189,6 @@ class CartCore extends ObjectModel
     public const BOTH_WITHOUT_SHIPPING = 4;
     public const ONLY_SHIPPING = 5;
     public const ONLY_WRAPPING = 6;
-
-    /** @deprecated since 1.7 **/
-    public const ONLY_PRODUCTS_WITHOUT_SHIPPING = 7;
     public const ONLY_PHYSICAL_PRODUCTS_WITHOUT_SHIPPING = 8;
 
     private const DEFAULT_ATTRIBUTES_KEYS = ['attributes' => '', 'attributes_small' => ''];
@@ -322,11 +319,11 @@ class CartCore extends ObjectModel
     public function updateAddressId($id_address, $id_address_new)
     {
         $to_update = false;
-        if (!isset($this->id_address_invoice) || $this->id_address_invoice == $id_address) {
+        if (empty($this->id_address_invoice) || $this->id_address_invoice == $id_address) {
             $to_update = true;
             $this->id_address_invoice = $id_address_new;
         }
-        if (!isset($this->id_address_delivery) || $this->id_address_delivery == $id_address) {
+        if (empty($this->id_address_delivery) || $this->id_address_delivery == $id_address) {
             $to_update = true;
             $this->id_address_delivery = $id_address_new;
         }
@@ -345,7 +342,7 @@ class CartCore extends ObjectModel
      */
     public function updateDeliveryAddressId(int $currentAddressId, int $newAddressId)
     {
-        if (!isset($this->id_address_delivery) || (int) $this->id_address_delivery === $currentAddressId) {
+        if (empty($this->id_address_delivery) || (int) $this->id_address_delivery === $currentAddressId) {
             $this->id_address_delivery = $newAddressId;
             $this->update();
         }
@@ -488,7 +485,7 @@ class CartCore extends ObjectModel
         // set base cart total values, they will be updated and used for percentage cart rules (because percentage cart rules
         // are applied to the cart total's value after previously applied cart rules)
         $virtual_context->virtualTotalTaxExcluded = $virtual_context->cart->getOrderTotal(false, self::ONLY_PRODUCTS);
-        if (Tax::excludeTaxeOption()) {
+        if (!Configuration::get('PS_TAX')) {
             $virtual_context->virtualTotalTaxIncluded = $virtual_context->virtualTotalTaxExcluded;
         } else {
             $virtual_context->virtualTotalTaxIncluded = $virtual_context->cart->getOrderTotal(true, self::ONLY_PRODUCTS);
@@ -1940,7 +1937,6 @@ class CartCore extends ObjectModel
      *                  - Cart::BOTH_WITHOUT_SHIPPING
      *                  - Cart::ONLY_SHIPPING
      *                  - Cart::ONLY_WRAPPING
-     *                  - Cart::ONLY_PRODUCTS_WITHOUT_SHIPPING
      *                  - Cart::ONLY_PHYSICAL_PRODUCTS_WITHOUT_SHIPPING
      * @param array $products
      * @param int $id_carrier
@@ -1961,11 +1957,6 @@ class CartCore extends ObjectModel
     ) {
         if ((int) $id_carrier <= 0) {
             $id_carrier = null;
-        }
-
-        // deprecated type
-        if ($type == Cart::ONLY_PRODUCTS_WITHOUT_SHIPPING) {
-            $type = Cart::ONLY_PRODUCTS;
         }
 
         // check type
@@ -2020,7 +2011,7 @@ class CartCore extends ObjectModel
             }
         }
 
-        if (Tax::excludeTaxeOption()) {
+        if (!Configuration::get('PS_TAX')) {
             $withTaxes = false;
         }
 
@@ -3470,7 +3461,7 @@ class CartCore extends ObjectModel
         }
 
         // Select carrier tax
-        if ($use_tax && !Tax::excludeTaxeOption()) {
+        if ($use_tax && Configuration::get('PS_TAX')) {
             $address = Address::initialize((int) $address_id);
 
             if (Configuration::get('PS_ATCP_SHIPWRAP')) {

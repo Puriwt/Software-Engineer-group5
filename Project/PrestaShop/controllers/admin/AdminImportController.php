@@ -1556,10 +1556,9 @@ class AdminImportControllerCore extends AdminController
 
             if (is_array($category_data)) {
                 foreach ($category_data as $tmp) {
-                    if ($product->category && is_array($product->category)) {
-                        continue;
+                    if (!$product->category || is_array($product->category)) {
+                        $product->category[] = $tmp;
                     }
-                    $product->category[] = $tmp;
                 }
             }
         }
@@ -4242,7 +4241,9 @@ class AdminImportControllerCore extends AdminController
      */
     private function getSession()
     {
-        return \PrestaShop\PrestaShop\Adapter\SymfonyContainer::getInstance()->get('session');
+        $requestStack = \PrestaShop\PrestaShop\Adapter\SymfonyContainer::getInstance()->get('request_stack');
+
+        return $requestStack->getSession();
     }
 
     /**

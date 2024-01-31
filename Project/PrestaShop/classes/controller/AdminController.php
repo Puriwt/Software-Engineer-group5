@@ -35,8 +35,10 @@ use PrestaShop\PrestaShop\Core\Localization\Specification\Price as PriceSpecific
 use PrestaShop\PrestaShop\Core\Security\Permission;
 use PrestaShop\PrestaShop\Core\Util\ColorBrightnessCalculator;
 use PrestaShop\PrestaShop\Core\Util\Url\UrlCleaner;
+use PrestaShopBundle\Security\Admin\UserTokenManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class AdminControllerCore extends Controller
 {
@@ -835,6 +837,15 @@ class AdminControllerCore extends Controller
 
         $token = Tools::getValue('token');
         if ($token === $this->token) {
+            return true;
+        }
+
+        // Check token via manager (checks both legacy and CSRF symfony tokens)
+        if (null === $this->getContainer()) {
+            $this->container = $this->buildContainer();
+        }
+        $tokenManager = $this->getContainer()->get(UserTokenManager::class);
+        if ($tokenManager !== null && $tokenManager->isTokenValid()) {
             return true;
         }
 
@@ -2421,6 +2432,21 @@ class AdminControllerCore extends Controller
         return $this->tpl_list_vars;
     }
 
+    public function getMetaTitle()
+    {
+        return $this->meta_title;
+    }
+
+    public function getToolbarTitle(): array
+    {
+        return $this->toolbar_title;
+    }
+
+    public function getDisplay(): ?string
+    {
+        return $this->display;
+    }
+
     /**
      * Override to render the view page.
      *
@@ -2682,7 +2708,7 @@ class AdminControllerCore extends Controller
             }
 
             $username = $this->get('prestashop.user_provider')->getUsername();
-            $token = $this->get('security.csrf.token_manager')
+            $token = $this->get(CsrfTokenManagerInterface::class)
                 ->getToken($username)
                 ->getValue();
 

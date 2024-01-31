@@ -13,10 +13,6 @@ services:
     public: true
 
   # Interfaced services to decorate
-  prestashop.core.admin.data_provider.product_interface:
-    class: PrestaShopBundle\Service\DataProvider\Admin\ProductInterface
-  prestashop.core.admin.data_updater.product_interface:
-    class: PrestaShopBundle\Service\DataUpdater\Admin\ProductInterface
   prestashop.core.admin.page_preference_interface:
     class: PrestaShopBundle\Service\TransitionalBehavior\AdminPagePreferenceInterface
   prestashop.core.admin.data_provider.module_interface:
@@ -41,12 +37,6 @@ services:
   prestashop.database.naming_strategy:
     class: PrestaShopBundle\Service\Database\DoctrineNamingStrategy
     arguments: [ "%database_prefix%" ]
-
-  prestashop.service.product:
-    class: PrestaShopBundle\Service\ProductService
-    arguments:
-      - "@prestashop.adapter.data_provider.product"
-    deprecated: ~
 
   prestashop.service.translation:
     class: PrestaShopBundle\Service\TranslationService
@@ -84,19 +74,21 @@ services:
 
   prestashop.user_provider:
     alias: PrestaShopBundle\Service\DataProvider\UserProvider
-    deprecated: 'The "%alias_id%" service alias is deprecated since v9.0.'
+    deprecated:
+      package: PrestaShop\PrestaShop
+      version: 9.0
     public: true
 
   prestashop.router:
     class: PrestaShopBundle\Service\Routing\Router
     parent: 'router.default'
     public: true
+    arguments:
+      $container: '@service_container'
     calls:
-      - [ 'setTokenManager', [ '@security.csrf.token_manager' ] ]
-      - [ 'setUserProvider', [ '@PrestaShopBundle\Service\DataProvider\UserProvider' ] ]
+      - [ 'setUserTokenManager', [ '@PrestaShopBundle\Security\Admin\UserTokenManager' ] ]
 
-  prestashop.multistore.customized_configuration_checker:
-    class: PrestaShopBundle\Service\Multistore\CustomizedConfigurationChecker
+  PrestaShopBundle\Service\Multistore\CustomizedConfigurationChecker:
     arguments:
       - "@prestashop.adapter.legacy.configuration"
 
@@ -122,6 +114,11 @@ services:
     arguments:
       $storage: "@security.csrf.token_storage"
     autowire: true
+
+  PrestaShopBundle\Security\Admin\UserTokenManager:
+    autowire: true
+    arguments:
+      $cookieKey: '%cookie_key%'
 
   PrestaShopBundle\Service\Database\TransactionManager:
     public: false

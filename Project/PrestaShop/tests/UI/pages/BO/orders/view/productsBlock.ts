@@ -16,6 +16,8 @@ class ProductsBlock extends ViewOrderBasePage {
 
   private readonly orderProductsTable: string;
 
+  private readonly generateVoucherCheckbox: string;
+
   private readonly returnProductButton: string;
 
   private readonly returnQuantityInput: (row: number) => string;
@@ -152,6 +154,7 @@ class ProductsBlock extends ViewOrderBasePage {
     // Return block
     this.returnQuantityInput = (row: number) => `[id*=cancel_product_quantity]:nth-child(${row})`;
     this.returnQuantityCheckbox = (row: number) => `tr:nth-child(${row}) div.cancel-product-selector i`;
+    this.generateVoucherCheckbox = '#orderProductsPanel div.refund-voucher i';
     this.returnProductButton = '#cancel_product_save';
 
     // Products table
@@ -306,6 +309,9 @@ class ProductsBlock extends ViewOrderBasePage {
       page.locator(`${this.updateProductButton}:visible`).first().click(),
       this.waitForVisibleSelector(page, this.editProductQuantityInput),
     ]);
+    if (await this.elementVisible(page, this.orderProductsLoading, 2000)) {
+      await this.waitForHiddenSelector(page, this.orderProductsLoading);
+    }
     await this.waitForVisibleSelector(page, this.productQuantitySpan(row));
 
     return parseFloat(await this.getTextContent(page, this.productQuantitySpan(row)));
@@ -373,10 +379,7 @@ class ProductsBlock extends ViewOrderBasePage {
    */
   async deleteProduct(page: Page, row: number): Promise<string | null> {
     await this.dialogListener(page);
-    if (await this.elementVisible(page, this.growlMessageBlock)) {
-      await this.closeGrowlMessage(page);
-    }
-
+    await this.closeGrowlMessage(page);
     await Promise.all([
       page.waitForResponse((response) => response.url().includes('/products?_token')),
       this.waitForSelectorAndClick(page, this.deleteProductButton(row)),
@@ -571,7 +574,7 @@ class ProductsBlock extends ViewOrderBasePage {
    * @returns {Promise<boolean>}
    */
   async isRefundedColumnVisible(page: Page): Promise<boolean> {
-    return this.elementVisible(page, this.refundProductColumn);
+    return this.elementVisible(page, this.refundProductColumn, 2000);
   }
 
   /**
@@ -591,7 +594,7 @@ class ProductsBlock extends ViewOrderBasePage {
    * @param page {Page} Browser tab
    * @returns {Promise<{stockLocation: string, available: number, price:number;}>}
    */
-  async getSearchedProductDetails(page: Page): Promise<{ stockLocation: string; available: number; price:number; }> {
+  async getSearchedProductDetails(page: Page): Promise<{ stockLocation: string; available: number; price: number; }> {
     return {
       stockLocation: await this.getTextContent(page, this.addProductRowStockLocation),
       available: parseInt(await this.getTextContent(page, this.addProductAvailable), 10),
@@ -740,7 +743,17 @@ class ProductsBlock extends ViewOrderBasePage {
    * @returns {Promise<void>}
    */
   async checkReturnedQuantity(page: Page, row: number = 1): Promise<void> {
-    await page.setChecked(this.returnQuantityCheckbox(row), true, {force: true});
+    await this.setChecked(page, this.returnQuantityCheckbox(row), true, true);
+  }
+
+  /**
+   * Check generate voucher
+   * @param page {Page} Browser tab
+   * @param toEnable {boolean} True if we need to enable generate voucher
+   * @returns {Promise<void>}
+   */
+  async checkGenerateVoucher(page: Page, toEnable: boolean): Promise<void> {
+    await this.setChecked(page, this.generateVoucherCheckbox, toEnable, true);
   }
 
   /**

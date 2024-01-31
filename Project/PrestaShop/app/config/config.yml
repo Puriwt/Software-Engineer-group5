@@ -55,8 +55,8 @@ framework:
     strict_requirements: ~
   form: ~
   csrf_protection: ~
-  validation: { enable_annotations: true }
-  serializer: { enable_annotations: true }
+  validation: { enable_attributes: true }
+  serializer: { enable_attributes: true }
   default_locale: "%locale%"
   trusted_hosts: ~
   session:
@@ -92,7 +92,6 @@ twig:
   form_themes:
     - '@PrestaShop/Admin/TwigTemplateForm/bootstrap_4_horizontal_layout.html.twig'
   paths:
-    '%admin_page%/Product': Product
     '%admin_page%/TwigTemplateForm': Twig
     '%admin_page%/Common': Common
     '%admin_page%/Configure/AdvancedParameters': AdvancedParameters

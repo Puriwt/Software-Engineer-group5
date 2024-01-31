@@ -17,12 +17,13 @@ services:
       - "@prestashop.adapter.legacy.configuration"
       - "@doctrine.dbal.default_connection"
       - "@filesystem"
+    lazy: true
 
   # MODULE TAB MANAGEMENT
   prestashop.adapter.module.tab.register:
     class: PrestaShop\PrestaShop\Adapter\Module\Tab\ModuleTabRegister
     arguments:
-      - "@prestashop.core.admin.tab.repository"
+      - '@PrestaShopBundle\Entity\Repository\TabRepository'
       - "@prestashop.core.admin.lang.repository"
       - "@logger"
       - "@translator"
@@ -33,7 +34,7 @@ services:
   prestashop.adapter.module.tab.unregister:
     class: PrestaShop\PrestaShop\Adapter\Module\Tab\ModuleTabUnregister
     arguments:
-      - "@prestashop.core.admin.tab.repository"
+      - '@PrestaShopBundle\Entity\Repository\TabRepository'
       - "@prestashop.core.admin.lang.repository"
       - "@logger"
       - "@translator"

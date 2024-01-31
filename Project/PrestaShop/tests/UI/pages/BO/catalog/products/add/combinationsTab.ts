@@ -107,6 +107,8 @@ class CombinationsTab extends BOBasePage {
 
   private readonly bulkCombinationProgressModalCloseButton: string;
 
+  private readonly filterBySizeBlock: string;
+
   private readonly filterBySizeButton: string;
 
   private readonly filterBySizeDropDownMenu: string;
@@ -268,9 +270,10 @@ class CombinationsTab extends BOBasePage {
     this.bulkCombinationProgressModalCloseButton = '#bulk-combination-progress-modal button.close-modal-button';
 
     // Filter by size selectors
-    this.filterBySizeButton = 'button[data-role=filter-by-size]';
-    this.filterBySizeDropDownMenu = 'div.combinations-filters div.dropdown-menu';
-    this.filterBySizeCheckboxButton = (id: number) => `${this.filterBySizeDropDownMenu} div:nth-child(${id}) `
+    this.filterBySizeBlock = 'div.combinations-filters [data-role=filter-by-size-block]';
+    this.filterBySizeDropDownMenu = `${this.filterBySizeBlock} div.dropdown-menu`;
+    this.filterBySizeButton = `${this.filterBySizeBlock} [data-role=filter-by-size-btn]`;
+    this.filterBySizeCheckboxButton = (id: number) => `${this.filterBySizeDropDownMenu}  div:nth-child(${id}) `
       + '.md-checkbox-container';
     this.clearFilterButton = 'div.combinations-filters button.combinations-filters-clear';
 
@@ -324,7 +327,7 @@ class CombinationsTab extends BOBasePage {
     // Pagination selectors
     this.paginationBlock = '#combinations-pagination';
     this.paginationLabel = '#pagination-info';
-    this.paginationLimitSelect = '#paginator-limit';
+    this.paginationLimitSelect = `${this.paginationBlock} #paginator-limit`;
     this.paginationNextLink = `${this.paginationBlock} .page-link.next:not(.disabled)`;
     this.paginationPreviousLink = `${this.paginationBlock} .page-link.previous:not(.disabled)`;
 
@@ -566,7 +569,7 @@ class CombinationsTab extends BOBasePage {
    * @returns {Promise<string>}
    */
   async getCombinationNameFromModal(page: Page): Promise<string> {
-    const combinationFrame: Frame | null = await page.frame({url: /sell\/catalog\/products-v2\/combinations/gmi});
+    const combinationFrame: Frame | null = await page.frame({url: /sell\/catalog\/products\/combinations/gmi});
     expect(combinationFrame).not.eq(null);
 
     return this.getTextContent(combinationFrame!, this.editCombinationNameValue);
@@ -603,7 +606,7 @@ class CombinationsTab extends BOBasePage {
     await page.waitForTimeout(2000);
     await this.waitForVisibleSelector(page, this.editCombinationIframe);
 
-    const combinationFrame: Frame|null = page.frame({url: /sell\/catalog\/products-v2\/combinations/gmi});
+    const combinationFrame: Frame|null = page.frame({url: /sell\/catalog\/products\/combinations/gmi});
     expect(combinationFrame).to.not.equal(null);
 
     await this.setValue(combinationFrame!, this.editCombinationModalQuantityInput, combinationData.quantity);
@@ -633,7 +636,7 @@ class CombinationsTab extends BOBasePage {
    * @returns {Promise<ProductStockMovement>}
    */
   async getRecentStockMovements(page: Page, row: number = 1): Promise<ProductStockMovement> {
-    const combinationFrame: Frame|null = page.frame({url: /sell\/catalog\/products-v2\/combinations/gmi});
+    const combinationFrame: Frame|null = page.frame({url: /sell\/catalog\/products\/combinations/gmi});
     expect(combinationFrame).to.not.equal(null);
 
     return {
@@ -649,7 +652,7 @@ class CombinationsTab extends BOBasePage {
    * @returns {Promise<boolean>}
    */
   async closeEditCombinationModal(page: Page): Promise<boolean> {
-    const combinationFrame: Frame|null = page.frame({url: /sell\/catalog\/products-v2\/combinations/gmi});
+    const combinationFrame: Frame|null = page.frame({url: /sell\/catalog\/products\/combinations/gmi});
     expect(combinationFrame).to.not.equal(null);
 
     await this.waitForSelectorAndClick(page, this.editCombinationModalCloseButton);

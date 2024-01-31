@@ -31,10 +31,13 @@ namespace Tests\Integration\PrestaShopBundle\Routing\Converter;
 use Link;
 use PrestaShopBundle\Routing\Converter\Exception\AlreadyConvertedException;
 use PrestaShopBundle\Routing\Converter\LegacyUrlConverter;
+use Tests\Integration\Utility\LoginTrait;
 use Tests\TestCase\SymfonyIntegrationTestCase;
 
 class LegacyUrlConverterTest extends SymfonyIntegrationTestCase
 {
+    use LoginTrait;
+
     /** @var Link|null */
     private $link;
 
@@ -305,32 +308,6 @@ class LegacyUrlConverterTest extends SymfonyIntegrationTestCase
         $this->assertSameUrl($expectedUrl, $convertedUrl);
     }
 
-    public function testTabParameter(): void
-    {
-        /** @var LegacyUrlConverter $converter */
-        $converter = self::$kernel->getContainer()->get('prestashop.bundle.routing.converter.legacy_url_converter');
-        $convertedUrl = $converter->convertByParameters(['tab' => 'AdminCustomers']);
-        $this->assertSameUrl('/sell/customers/', $convertedUrl);
-
-        $convertedUrl = $converter->convertByParameters(
-            [
-                'tab' => 'AdminCustomers',
-                'controller' => 'admincustomers',
-                'id_customer' => 42,
-                'viewcustomer' => '',
-            ]
-        );
-        $this->assertSameUrl('/sell/customers/42/view', $convertedUrl);
-
-        $legacyUrl = $this->link->getAdminBaseLink() . basename(_PS_ADMIN_DIR_) . '/index.php?tab=AdminCustomers&id_customer=42&viewcustomer&token=932d64a68d64faff8f692d84fc0e1d89';
-        $convertedUrl = $converter->convertByUrl($legacyUrl);
-        $this->assertSameUrl('/sell/customers/42/view', $convertedUrl);
-
-        $legacyUrl = $this->link->getAdminBaseLink() . basename(_PS_ADMIN_DIR_) . '/index.php?tab=AdminCustomers&controller=admincustomers&id_customer=42&viewcustomer&token=932d64a68d64faff8f692d84fc0e1d89';
-        $convertedUrl = $converter->convertByUrl($legacyUrl);
-        $this->assertSameUrl('/sell/customers/42/view', $convertedUrl);
-    }
-
     public function testInsensitiveControllersAndActions(): void
     {
         /** @var LegacyUrlConverter $converter */
@@ -445,6 +422,9 @@ class LegacyUrlConverterTest extends SymfonyIntegrationTestCase
 
     public function testRedirectionListenerWithoutLoop(): void
     {
+        $this->loginUser($this->client);
+        $this->client->disableReboot();
+
         $legacyUrl = $this->link->getAdminBaseLink() . basename(_PS_ADMIN_DIR_) . '/' . \Dispatcher::getInstance()->createUrl('AdminAdminPreferences');
         $this->client->request('GET', $legacyUrl);
         $response = $this->client->getResponse();

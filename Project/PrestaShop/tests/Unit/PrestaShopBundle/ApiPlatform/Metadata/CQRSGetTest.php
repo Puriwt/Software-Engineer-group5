@@ -26,10 +26,11 @@
 
 declare(strict_types=1);
 
-namespace PrestaShopBundle\ApiPlatform\Metadata;
+namespace Tests\Unit\PrestaShopBundle\ApiPlatform\Metadata;
 
 use ApiPlatform\Exception\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use PrestaShopBundle\ApiPlatform\Metadata\CQRSGet;
 use PrestaShopBundle\ApiPlatform\Provider\QueryProvider;
 
 class CQRSGetTest extends TestCase

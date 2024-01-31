@@ -12,11 +12,15 @@ class PsEmailAlerts extends ModuleConfiguration {
 
   private readonly productAvailabilityCheckbox: (toEnable: boolean) => string;
 
+  private readonly orderEditCheckbox: (toEnable: boolean) => string;
+
   private readonly submitCustomerNotifications: string;
 
   private readonly newOrderCheckbox: (toEnable: boolean) => string;
 
   private readonly addOrderEmailInput: string;
+
+  private readonly addEmailOutOfStock: string;
 
   private readonly returnEmailInput: string;
 
@@ -38,17 +42,32 @@ class PsEmailAlerts extends ModuleConfiguration {
     // Selectors
     // Customer Notifications
     this.productAvailabilityCheckbox = (toEnable: boolean) => `#MA_CUSTOMER_QTY_${toEnable ? 'on' : 'off'}`;
+    this.orderEditCheckbox = (toEnable: boolean) => `#MA_ORDER_EDIT_${toEnable ? 'on' : 'off'}`;
     this.submitCustomerNotifications = 'button[name="submitMailAlert"]';
     // Merchant Notifications
     this.newOrderCheckbox = (toEnable: boolean) => `#MA_MERCHANT_ORDER_${toEnable ? 'on' : 'off'}`;
     this.addOrderEmailInput = '#fieldset_1_1 div.form-wrapper div:nth-child(2) > div > div > input';
     this.outOfStockCheckbox = (toEnable: boolean) => `#MA_MERCHANT_OOS_${toEnable ? 'on' : 'off'}`;
+    this.addEmailOutOfStock = '#fieldset_1_1 > div.form-wrapper div:nth-child(4) > div > div > input';
     this.returnsCheckbox = (toEnable: boolean) => `#MA_RETURN_SLIP_${toEnable ? 'on' : 'off'}`;
     this.returnEmailInput = '#fieldset_1_1 div.form-wrapper div:nth-child(7) > div > div input';
     this.submitMerchantNotifications = 'button[name="submitMAMerchant"]';
   }
 
   /* Methods */
+
+  /**
+   * Set edit order
+   * @param page {Page} Browser tab
+   * @param toEnable {boolean} True if we need to enable edit order
+   * @returns {Promise<number>}
+   */
+  async setEditOrder(page: Page, toEnable: boolean): Promise<string> {
+    await this.setChecked(page, this.orderEditCheckbox(toEnable));
+    await this.clickAndWaitForURL(page, this.submitCustomerNotifications);
+
+    return this.getAlertSuccessBlockContent(page);
+  }
 
   /**
    * Set new order
@@ -66,6 +85,30 @@ class PsEmailAlerts extends ModuleConfiguration {
     // @todo https://github.com/PrestaShop/PrestaShop/issues/34784
     await this.setChecked(page, this.outOfStockCheckbox(false));
     await this.setChecked(page, this.returnsCheckbox(false));
+    await this.clickAndWaitForURL(page, this.submitMerchantNotifications);
+
+    return this.getAlertSuccessBlockContent(page);
+  }
+
+  /**
+   * Set out of stock
+   * @param page {Page} Browser tab
+   * @param toEnable {boolean} True if we need to enable out of stock
+   * @param email {string} Email to set
+   * @returns {Promise<number>}
+   */
+  async setOutOfStock(page: Page, toEnable: boolean, email: string = ''): Promise<string> {
+    // @todo https://github.com/PrestaShop/PrestaShop/issues/34784
+    await this.setChecked(page, this.newOrderCheckbox(false));
+    //
+    await this.setChecked(page, this.outOfStockCheckbox(toEnable));
+    if (toEnable) {
+      await this.setValue(page, this.addEmailOutOfStock, email);
+      await page.keyboard.press('Enter');
+    }
+    // @todo https://github.com/PrestaShop/PrestaShop/issues/34784
+    await this.setChecked(page, this.returnsCheckbox(false));
+    //
     await this.clickAndWaitForURL(page, this.submitMerchantNotifications);
 
     return this.getAlertSuccessBlockContent(page);

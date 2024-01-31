@@ -1,7 +1,22 @@
 version: '3'
 services:
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    networks:
+      - prestashop_network
+
   mysql:
-    container_name: some-mysql
+    container_name: project
     platform: linux/x86_64
     image: mysql:5.7
     restart: unless-stopped
@@ -12,6 +27,7 @@ services:
       - prestashop_network
   prestashop:
     container_name: prestashop
+    platform: linux/x86_64
     image: prestashop/prestashop:latest
     restart: unless-stopped
     depends_on:

@@ -86,6 +86,17 @@ class AddNewAPIAccess extends BOBasePage {
   /*
   Methods
    */
+  /**
+   * Save the form
+   * @param page {Page} Browser tab
+   * @return {Promise<string>}
+   */
+  async saveForm(page: Page): Promise<string> {
+    // Save
+    await this.clickAndWaitForURL(page, this.saveButton);
+
+    return this.getAlertSuccessBlockParagraphContent(page);
+  }
 
   /**
    * Add API Access
@@ -105,10 +116,7 @@ class AddNewAPIAccess extends BOBasePage {
       await this.setAPIScopeChecked(page, scope, true);
     }
 
-    // Save
-    await this.clickAndWaitForURL(page, this.saveButton);
-
-    return this.getAlertSuccessBlockParagraphContent(page);
+    return this.saveForm(page);
   }
 
   /**
@@ -154,7 +162,8 @@ class AddNewAPIAccess extends BOBasePage {
    * @param group {string} Scopes Group
    */
   async getApiScopes(page: Page, group: string): Promise<string[]> {
-    return page.locator(this.scopeGroup(group))
+    return page
+      .locator(this.scopeGroup(group))
       .evaluateAll(
         (all: HTMLElement[]) => all
           .map((el) => el.getAttribute('data-scope'))
@@ -169,7 +178,7 @@ class AddNewAPIAccess extends BOBasePage {
    * @return {Promise<boolean>}
    */
   async isAPIScopeDisabled(page: Page, scope: string): Promise<boolean> {
-    return this.isDisabled(page, `${this.scopeStatusInput(scope)}`);
+    return this.isDisabled(page, `${this.scopeStatusInput(scope)}[value='0']`);
   }
 
   /**

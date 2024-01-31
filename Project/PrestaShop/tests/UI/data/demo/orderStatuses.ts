@@ -49,6 +49,14 @@ export default {
     invoiceOn: false,
     emailTemplate: 'order_canceled',
   }),
+  refunded: new OrderStatusData({
+    id: 7,
+    name: 'Refunded',
+    sendEmailOn: true,
+    deliveryOn: false,
+    invoiceOn: true,
+    emailTemplate: 'refund',
+  }),
   paymentError: new OrderStatusData({
     id: 8,
     name: 'Payment error',
@@ -72,5 +80,21 @@ export default {
     deliveryOn: false,
     invoiceOn: false,
     emailTemplate: 'cashondelivery',
+  }),
+  onBackorderNotPaid: new OrderStatusData({
+    id: 12,
+    name: 'On backorder (not paid)',
+    sendEmailOn: true,
+    deliveryOn: false,
+    invoiceOn: false,
+    emailTemplate: 'outofstock',
+  }),
+  onBackorderPaid: new OrderStatusData({
+    id: 9,
+    name: 'On backorder (paid)',
+    sendEmailOn: true,
+    deliveryOn: false,
+    invoiceOn: true,
+    emailTemplate: 'outofstock',
   }),
 };
