@@ -27,7 +27,6 @@ services:
       - prestashop_network
   prestashop:
     container_name: prestashop
-    platform: linux/x86_64
     image: prestashop/prestashop:latest
     restart: unless-stopped
     depends_on:
@@ -39,10 +38,20 @@ services:
       DB_NAME: prestashop
       DB_USER: root
       DB_PASSWD: admin
-      PS_FOLDER_ADMIN: adminpres
+      PS_FOLDER_ADMIN: Controller
       PS_FOLDER_INSTALL: presint
       PS_DOMAIN: localhost:8080
+      
     networks:
       - prestashop_network
+    volumes:
+      - type: bind
+        source: ./ # local path to the module
+        target: /var/www/html/ 
+      - psdata:/var/www/html/
+      
 networks:
-    prestashop_network:
+  prestashop_network:
+volumes:
+  psdata:
+  dbdata:
