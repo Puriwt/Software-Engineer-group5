@@ -3,33 +3,33 @@ import { test, expect } from '@playwright/test';
 
   // open page check ------------------------------------------------------------------------ //
 test('TC0001', async ({ page }) => {
-  await page.goto('http://localhost:8080/gb/');
-  await expect(page.getByRole('heading', { name: 'Popular Products' })).toBeVisible();
+  await page.goto('http://localhost:8080/th');
+  await expect(page.getByRole('heading', { name: 'สินค้ายอดนิยม' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'gb' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'th', exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'id' })).toBeVisible();
 });
 
   // translate check ------------------------------------------------------------------------ //
-  test('TC002 translate eng first page', async ({ page }) => {
-    await page.goto('http://localhost:8080/gb/');
-    await expect(page.locator('#contact-link').getByRole('link', { name: 'Contact us' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Popular Products' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'On sale' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'New products' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'All new products ' })).toBeVisible();
-  });
-  test('TC003 translate eng to thai', async ({ page }) => {
-    await page.goto('http://localhost:8080/gb/');
-    await page.getByRole('link', { name: 'th', exact: true }).click();
+  test('TC002 translate thai first page', async ({ page }) => {
+    await page.goto('http://localhost:8080/th/');
     await expect(page.locator('#contact-link').getByRole('link', { name: 'ติดต่อเรา' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'สินค้ายอดนิยม' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'กำลังลดราคา' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'สินค้าใหม่' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'ดูสินค้าใหม่ทั้งหมด ' })).toBeVisible();
   });
-  test('TC004 translate thai to indo', async ({ page }) => {
+  test('TC003 translate thai to eng', async ({ page }) => {
     await page.goto('http://localhost:8080/th/');
+    await page.getByRole('link', { name: 'gb' }).click();
+    await expect(page.locator('#contact-link').getByRole('link', { name: 'Contact us' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Popular Products' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'On sale' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'New products' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'All new products ' })).toBeVisible();
+  });
+  test('TC004 translate eng to indo', async ({ page }) => {
+    await page.goto('http://localhost:8080/gb/');
     await page.getByRole('link', { name: 'id' }).click();
     await expect(page.locator('#contact-link').getByRole('link', { name: 'Hubungi kami' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Populer' })).toBeVisible();
@@ -39,12 +39,12 @@ test('TC0001', async ({ page }) => {
   });
   test('TC005 translate indo to eng', async ({ page }) => {
     await page.goto('http://localhost:8080/id/');
-    await page.getByRole('link', { name: 'gb' }).click();
-    await expect(page.locator('#contact-link').getByRole('link', { name: 'Contact us' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Popular Products' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'On sale' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'New products' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'All new products ' })).toBeVisible();
+    await page.getByRole('link', { name: 'th' }).click();
+    await expect(page.locator('#contact-link').getByRole('link', { name: 'ติดต่อเรา' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'สินค้ายอดนิยม' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'กำลังลดราคา' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'สินค้าใหม่' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'ดูสินค้าใหม่ทั้งหมด ' })).toBeVisible();
   });
   // translate check ------------------------------------------------------------------------ //
 
