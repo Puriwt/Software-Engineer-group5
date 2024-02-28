@@ -1,0 +1,5 @@
+Docker image : https://hub.docker.com/r/puriwt/sprint03
+
+* Prestashop : docker pull puriwt/sprint03:prestashopsprint03
+* Database : docker pull puriwt/sprint03:databasesprint03
+* php : docker pull puriwt/sprint03:phpsprint03
