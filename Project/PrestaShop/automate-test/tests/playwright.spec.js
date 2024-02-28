@@ -148,7 +148,7 @@ test('TC0001', async ({ page }) => {
 
 
   // Quick view check ------------------------------------------------------------------------ //
-  test('TC000 Quick view eng', async ({ page }) => {
+  test('TC012 Quick view eng', async ({ page }) => {
     await page.goto('http://localhost:8080/gb/');
     await page.locator('article').filter({ hasText: ' Quick view Polo shirt-CP ฿' }).getByRole('link').nth(1).click();
     await expect(page.locator('#quickview-modal-1-1')).toBeVisible(); // แสดงหน้า quick view
@@ -160,7 +160,7 @@ test('TC0001', async ({ page }) => {
     await expect(page.getByText(' Out of stock')).toBeVisible();
   });
 
-  test('TC000 Quick view thai', async ({ page }) => {
+  test('TC013 Quick view thai', async ({ page }) => {
     await page.goto('http://localhost:8080/gb/');
     await page.getByRole('link', { name: 'th', exact: true }).click();
     await page.locator('article').filter({ hasText: ' เปิดหน้าต่างย่อ เสื้อโปโล-' }).getByRole('link').nth(1).click();
@@ -173,7 +173,7 @@ test('TC0001', async ({ page }) => {
     await expect(page.getByText(' สินค้าหมด')).toBeVisible();
   });
 
-  test('TC000 Quick view indo', async ({ page }) => {
+  test('TC014 Quick view indo', async ({ page }) => {
     await page.goto('http://localhost:8080/gb/');
     await page.getByRole('link', { name: 'id' }).click();
     await page.locator('article').filter({ hasText: ' Lihat sekilas Kemeja polo-' }).getByRole('link').nth(1).click();
@@ -187,7 +187,7 @@ test('TC0001', async ({ page }) => {
   });
 
   // Product detail check ------------------------------------------------------------------------ //
-  test('TC000 Product detail eng', async ({ page }) => {
+  test('TC015 Product detail eng', async ({ page }) => {
     await page.goto('http://localhost:8080/gb/');
     await page.getByRole('link', { name: 'Vacuum flask-CP' }).first().click();
     await expect(page.getByRole('heading', { name: 'Vacuum flask-CP' })).toBeVisible();
@@ -199,7 +199,7 @@ test('TC0001', async ({ page }) => {
     await expect(page.getByText('Delivery policy')).toBeVisible();
     await expect(page.getByText('Return policy')).toBeVisible();
   });
-  test('TC000 Product detail thai', async ({ page }) => {
+  test('TC016 Product detail thai', async ({ page }) => {
     await page.goto('http://localhost:8080/gb/');
     await page.getByRole('link', { name: 'th', exact: true }).click();
     await page.getByRole('link', { name: 'แก้วเก็บความร้อน&ความเย็น-CP' }).first().click();
@@ -212,7 +212,7 @@ test('TC0001', async ({ page }) => {
     await expect(page.getByText('นโยบายการจัดส่ง')).toBeVisible();
     await expect(page.getByText('นโยบายการคืนสินค้า')).toBeVisible();
   });
-  test('TC000 Product detail indo', async ({ page }) => {
+  test('TC017 Product detail indo', async ({ page }) => {
     await page.goto('http://localhost:8080/gb/');
     await page.getByRole('link', { name: 'id' }).click();
     await page.getByRole('link', { name: 'Tabung hampa udara-CP' }).first().click();
@@ -226,19 +226,189 @@ test('TC0001', async ({ page }) => {
     await expect(page.getByText('Kebijakan pengembalian')).toBeVisible();
   });
 
+  // menu product check ------------------------------------------------------------------------ //
+    // Clothes check
+    test('TC018 Clothes Category in thai', async ({ page }) => {
+      await page.goto('http://localhost:8080/th/');
+      await page.getByRole('link', { name: 'เสื้อผ้า' }).click(); // คลิกเสื้อผ้า
+      await expect(page.getByRole('heading', { name: 'เสื้อผ้า' })).toBeVisible(); // แสดงหน้าเสื้อผ้า
+      await expect(page.getByRole('heading', { name: 'หมวดย่อย' })).toBeVisible(); // มีหมวดย่อยเป็น
+      await expect(page.getByRole('heading', { name: 'เสื้อฮู้ด', exact: true }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'เสื้อยืด' }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'ปฏิบัติการ' }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'เสื้อเชิ้ต' }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('link', { name: 'เสื้อโปโล-CP' }).first()).toBeVisible(); // แสดงสินค้าเป็น
+      await expect(page.getByRole('link', { name: 'เสื้อปฎิบัติการณ์-CP' }).first()).toBeVisible();
+      await expect(page.getByRole('link', { name: 'เสื้อฮู้ด-CP' }).first()).toBeVisible();
+    });
+    test('TC019 Clothes Category in eng', async ({ page }) => {
+      await page.goto('http://localhost:8080/gb/');
+      await page.getByText('  Clothes').click();
+      await expect(page.getByRole('heading', { name: 'Clothes' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Subcategories' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Hoodie', exact: true })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'T-shirt' }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Workshop shirt', exact: true }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Shirt', exact: true }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Polo shirt-CP' }).first()).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Workshop shirt-CP' }).first()).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Hoodie-CP' }).first()).toBeVisible();
+    });
+    test('TC020 Clothes Category in indo', async ({ page }) => {
+      await page.goto('http://localhost:8080/id/');
+      await page.getByText('  Pakaian').click();
+      await expect(page.getByRole('heading', { name: 'Pakaian' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Sub kategori' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Tudung', exact: true }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Kaos' }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Baju bengkel', exact: true }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'kemeja', exact: true }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Kemeja polo-CP' }).first()).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Baju bengkel-CP' }).first()).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Tudung-CP' }).first()).toBeVisible();
+    });
+    // Glass check
+    test('TC021 Glass Category in thai', async ({ page }) => {
+      await page.goto('http://localhost:8080/th/');
+      await page.getByText('  แก้วน้ำ').click();
+      await expect(page.locator('h1')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'หมวดย่อย' })).toBeVisible();
+      await expect(page.locator('#subcategories').getByText('แก้วน้ำ')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'แก้วพลาสติก', exact: true }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'แก้วเก็บความร้อน&ความเย็น', exact: true }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('link', { name: 'แก้วน้ำ-CP' }).first()).toBeVisible();
+      await expect(page.getByRole('link', { name: 'แก้วเก็บความร้อน&ความเย็น-CP' }).first()).toBeVisible();
+      await expect(page.getByRole('link', { name: 'แก้วพลาสติก-CP' }).first()).toBeVisible();
+    });
+    test('TC022 Glass Category in eng', async ({ page }) => {
+      await page.goto('http://localhost:8080/gb/');
+      await page.getByText('  Glass').click();
+      await expect(page.locator('#js-product-list-header div').filter({ hasText: 'Glass' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Subcategories' })).toBeVisible();
+      await expect(page.locator('#subcategories').getByText('Glass')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Tumbler', exact: true }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Vacuum flask', exact: true }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Cup-CP' }).first()).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Vacuum flask-CP' }).first()).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Tumbler-CP' }).first()).toBeVisible();
+    });
+    test('TC023 Glass Category in indo', async ({ page }) => {
+      await page.goto('http://localhost:8080/id/');
+      await page.getByText('  Kaca').click();
+      await expect(page.locator('#js-product-list-header div').filter({ hasText: 'Kaca' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Sub kategori' })).toBeVisible();
+      await expect(page.locator('#subcategories').getByText('Kaca')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Segelas', exact: true }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Tabung hampa udara', exact: true }).getByRole('link')).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Cangkir-CP' }).first()).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Tabung hampa udara-CP' }).first()).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Segelas-CP' }).first()).toBeVisible();
+    });
+
+    // Order tracking check
+    test('TC024 Order tracking in thai', async ({ page }) => {
+      await page.goto('http://localhost:8080/th/');
+      await page.getByRole('link', { name: 'ติดตามการสั่งซื้อ' }).click(); // คลิกติดตามการสั่งซื้อ
+      await expect(page.getByRole('heading', { name: 'การติดตามคำสั่งซื้อ' })).toBeVisible(); // แสดงหน้าติดตามการสั่งซื้อ
+      await expect(page.getByText('หากต้องการตรวจสอบสถานะการจัดส่งสินค้าของคุณ, กรุณากรอกข้อมูลดังต่อไปนี้')).toBeVisible();
+      await expect(page.getByText('การอ้างอิงการสั่งซื้อ')).toBeVisible();
+      await expect(page.getByText('อีเมลล์')).toBeVisible();
+      await expect(page.getByRole('button', { name: 'ส่ง' })).toBeVisible();
+    });
+    test('TC025 Order tracking in eng', async ({ page }) => {
+      await page.goto('http://localhost:8080/th/');
+      await page.getByRole('link', { name: 'gb' }).click();
+      await page.getByRole('heading', { name: 'Guest Order Tracking' }).click();
+      await expect(page.getByText('To track your order, please')).toBeVisible();
+      await expect(page.getByText('Order Reference:')).toBeVisible();
+      await expect(page.getByText('Email:')).toBeVisible();
+      await expect(page.getByRole('button', { name: 'Send' })).toBeVisible();
+    });
+    test('TC026 Order tracking in indo', async ({ page }) => {
+      await page.goto('http://localhost:8080/th/');
+      await page.getByRole('link', { name: 'id' }).click();
+      await expect(page.getByRole('heading', { name: 'Pelacakan Pesanan Tamu' })).toBeVisible();
+      await expect(page.getByText('Untuk melacak pembelian Anda')).toBeVisible();
+      await expect(page.getByText('referensi pembelian')).toBeVisible();
+      await expect(page.getByText('E-mail:')).toBeVisible();
+      await expect(page.getByRole('button', { name: 'Kirim' })).toBeVisible();
+    });
+
+  // Add to cart check ------------------------------------------------------------------------ //
+  test('test', async ({ page }) => {
+    await page.goto('http://localhost:8080/gb/');
+    await page.getByRole('link', { name: 'Polo shirt-CP' }).first().click();
+    await page.getByRole('button', { name: ' Add to basket' }).click();
+    await expect(page.getByRole('heading', { name: ' Product successfully added' })).toBeVisible();
+    await expect(page.getByLabel('Product successfully added').getByRole('heading', { name: 'Polo shirt-CP' })).toBeVisible();
+    await expect(page.getByText('There is 1 item in your cart.')).toBeVisible();
+    await expect(page.getByText('Subtotal:')).toBeVisible();
+    await expect(page.getByText('฿588.50').nth(2)).toBeVisible();
+    await expect(page.getByText('Shipping:')).toBeVisible();
+    await expect(page.getByText('Free')).toBeVisible();
+    await expect(page.getByText('Total (VAT incl.)')).toBeVisible();
+    await expect(page.getByText('฿588.50').nth(3)).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Continue shopping' })).toBeVisible();
+    await expect(page.getByRole('link', { name: ' Proceed to checkout' })).toBeVisible();
+  });
+  test('test', async ({ page }) => {
+    await page.goto('http://localhost:8080/gb/');
+    await page.getByRole('link', { name: 'th', exact: true }).click();
+    await page.getByRole('link', { name: 'เสื้อโปโล-CP' }).first().click();
+    await page.getByRole('button', { name: ' หยิบใส่ตะกร้า' }).click();
+    await expect(page.getByRole('heading', { name: ' สินค้าได้ถูกเพิ่มไปยังตะกร้าสินค้าของคุณแล้ว' })).toBeVisible();
+    await expect(page.getByLabel('สินค้าได้ถูกเพิ่มไปยังตะกร้าสินค้าของคุณแล้ว').getByRole('heading', { name: 'เสื้อโปโล-CP' })).toBeVisible();
+    await expect(page.getByText('ยอดรวม:')).toBeVisible();
+    await expect(page.getByText('฿588.50').nth(2)).toBeVisible();
+    await expect(page.getByText('การจัดส่ง:')).toBeVisible();
+    await expect(page.getByText('ฟรี')).toBeVisible();
+    await expect(page.getByText('รวมทั้งสิ้น (รวมภาษี)')).toBeVisible();
+    await expect(page.getByText('฿588.50').nth(3)).toBeVisible();
+    await expect(page.getByRole('button', { name: 'ซื้อสินค้าต่อ' })).toBeVisible();
+    await expect(page.getByRole('link', { name: ' ทำรายการชำระเงิน' })).toBeVisible();
+  });
+
+
+  
+
 
 
 
   // footer check ------------------------------------------------------------------------ //
+     // thai
+     test('TC027 footer products in thai', async ({ page }) => {
+      await page.goto('http://localhost:8080/th/');
+      await expect(page.locator('p').filter({ hasText: 'สินค้า' })).toBeVisible();
+      await expect(page.getByRole('link', { name: 'ลดราคา', exact: true })).toBeVisible();
+      await expect(page.getByRole('link', { name: 'สินค้าใหม่', exact: true })).toBeVisible();
+      await expect(page.getByRole('link', { name: 'สินค้าขายดี' })).toBeVisible();
+    });
+    test('TC028 footer Our company in thai', async ({ page }) => {
+      await page.goto('http://localhost:8080/th/');
+      await expect(page.locator('p').filter({ hasText: 'เกี่ยวกับเรา' })).toBeVisible();
+      await expect(page.getByRole('link', { name: 'การส่ง' })).toBeVisible();
+      await expect(page.getByRole('link', { name: 'ร้านค้า' })).toBeVisible();
+      await expect(page.getByRole('link', { name: 'แผนผังเว็บไซต์' })).toBeVisible();
+      await expect(page.getByRole('link', { name: 'ประกาศทางกฎหมาย' })).toBeVisible();
+      await expect(page.getByRole('link', { name: 'ข้อกำหนดและเงื่อนไขการใช้งาน' })).toBeVisible();
+      await expect(page.getByRole('link', { name: 'เกี่ยวกับเรา' })).toBeVisible();
+      await expect(page.getByRole('link', { name: 'การชำระเงินที่ปลอดภัย' })).toBeVisible();
+    });
+    test('TC029 footer Store information in thai', async ({ page }) => {
+      await page.goto('http://localhost:8080/th/');
+      await expect(page.locator('p').filter({ hasText: 'ข้อมูลร้านค้า' })).toBeVisible();
+      await expect(page.getByText('Computing Store')).toBeVisible();
+      await expect(page.getByRole('link', { name: 'miry.sanders-0r@icloud.com' })).toBeVisible();
+    });
   // eng
-  test('TC002 footer products eng', async ({ page }) => {
+  test('TC030 footer products in eng', async ({ page }) => {
     await page.goto('http://localhost:8080/gb/');
     await expect(page.locator('p').filter({ hasText: /^Products$/ })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Prices drop' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'New products', exact: true })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Best sellers' })).toBeVisible();
   });
-  test('TC003 footer Our company eng', async ({ page }) => {
+  test('TC031 footer Our company in eng', async ({ page }) => {
     await page.goto('http://localhost:8080/gb/');
     await expect(page.locator('p').filter({ hasText: 'Our company' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Delivery' })).toBeVisible();
@@ -250,52 +420,25 @@ test('TC0001', async ({ page }) => {
     await expect(page.getByRole('link', { name: 'About us' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Secure payment' })).toBeVisible();
   });
-  test('TC004 footer Store information eng', async ({ page }) => {
+  test('TC032 footer Store information in eng', async ({ page }) => {
     await page.goto('http://localhost:8080/gb/');
     await expect(page.locator('p').filter({ hasText: 'Store information' })).toBeVisible();
     await expect(page.getByText('Computing StoreThailand Email')).toBeVisible();
     await expect(page.getByRole('link', { name: 'miry.sanders-0r@icloud.com' })).toBeVisible();
   });
 
-   // thai
-  test('test', async ({ page }) => {
-    await page.goto('http://localhost:8080/gb/');
-    await page.getByRole('link', { name: 'th' }).click();
-    await expect(page.locator('p').filter({ hasText: 'สินค้า' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'ลดราคา', exact: true })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'สินค้าใหม่', exact: true })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'สินค้าขายดี' })).toBeVisible();
-  });
-  test('TC004 footer Informasi toko indonesia', async ({ page }) => {
-    await page.goto('http://localhost:8080/gb/');
-    await expect(page.locator('p').filter({ hasText: 'เกี่ยวกับเรา' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'การส่ง' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'ร้านค้า' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'แผนผังเว็บไซต์' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'ประกาศทางกฎหมาย' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'ข้อกำหนดและเงื่อนไขการใช้งาน' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'เกี่ยวกับเรา' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'การชำระเงินที่ปลอดภัย' })).toBeVisible();
-  });
-  test('TC004 footer Informasi toko indonesia', async ({ page }) => {
-    await page.goto('http://localhost:8080/gb/');
-    await expect(page.locator('p').filter({ hasText: 'ข้อมูลร้านค้า' })).toBeVisible();
-    await expect(page.getByText('Computing Store')).toBeVisible();
-    await expect(page.getByRole('link', { name: 'miry.sanders-0r@icloud.com' })).toBeVisible();
-  });
  
   // indonesia
-  test('TC002 footer Produk indonesia', async ({ page }) => {
-  await page.goto('http://localhost:8080/gb/');
-  await page.getByRole('link', { name: 'id' }).click();
+  test('TC033 footer products in indonesia', async ({ page }) => {
+  await page.goto('http://localhost:8080/id/');
   await page.locator('p').filter({ hasText: 'Produk' }).click();
   await expect(page.locator('p').filter({ hasText: 'Produk' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Turun harga' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Produk baru', exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Terlaris' })).toBeVisible();
   });
-  test('TC004 footer Perusahaan kami indonesia', async ({ page }) => {
-    await page.goto('http://localhost:8080/gb/');
+  test('TC034 footer Our company in indonesia', async ({ page }) => {
+    await page.goto('http://localhost:8080/id/');
     await expect(page.locator('p').filter({ hasText: 'Perusahaan kami' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Pengiriman' })).toBeVisible();
     await expect(page.getByTitle('Gunakan form ini untuk')).toBeVisible();
@@ -307,8 +450,8 @@ test('TC0001', async ({ page }) => {
     await expect(page.getByRole('link', { name: 'Pembayaran yang aman' })).toBeVisible();
   });
 
-  test('TC004 footer Informasi toko indonesia', async ({ page }) => {
-    await page.goto('http://localhost:8080/gb/');
+  test('TC035 footer Store information in indonesia', async ({ page }) => {
+    await page.goto('http://localhost:8080/id/');
     await expect(page.locator('p').filter({ hasText: 'Informasi toko' })).toBeVisible();
     await expect(page.getByText('Computing StoreThailand Email')).toBeVisible();
     await expect(page.getByRole('link', { name: 'miry.sanders-0r@icloud.com' })).toBeVisible();
